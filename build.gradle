@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.example'
-version = '0.0.1-SNAPSHOT'
+version = 'v1.1'
 
 java {
 	sourceCompatibility = '17'
@@ -48,4 +48,12 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+
+//// heroky 설정
+jar {
+	manifest {
+		attributes('Main-Class': 'com.example.fusalmatching.FusalMatchingApplication')
+	}
 }
