@@ -40,10 +40,7 @@ public class StadiumController {
         return stadiumService.getFieldList(id, date, time);
     }
 
-    @GetMapping("/test")
-    public String check() {
-        return "isOK";
-    }
+
 
 
 }
