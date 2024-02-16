@@ -25,6 +25,6 @@ Spring Boot 2.7.13
 https://fusal-matching.vercel.app/
 
 ## 서버 URL
-https://fusal-matching-backend-4808e80af663.herokuapp.com/
+https://fusal-matching-backend-7fbb15cd8430.herokuapp.com/
 
 
