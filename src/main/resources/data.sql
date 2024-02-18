@@ -312,7 +312,7 @@ insert into field (cost, matching_date, start_time, end_time, stadium_id, field_
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (62765, '2022-07-30', '2023-02-04 05:17:31', '2023-07-02 04:30:05', 44, 2);
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (89091, '2022-11-07', '2022-08-14 01:54:50', '2023-06-17 12:36:20', 13, 2);
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (65921, '2022-11-22', '2022-09-22 05:33:55', '2023-01-17 06:10:09', 17, 3);
-insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (120000, '2023-09-25', '18:00:00', '20:00:00', 7, 1);
+insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (120000, '2024-03-19', '18:00:00', '20:00:00', 7, 1);
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (68357, '2022-09-02', '2022-08-10 14:24:01', '2022-09-19 18:30:53', 19, 4);
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (60410, '2023-04-27', '2022-09-29 21:44:08', '2022-08-15 10:21:40', 6, 4);
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (91144, '2023-01-06', '2023-06-08 10:24:15', '2022-08-17 03:51:20', 47, 2);
@@ -334,7 +334,7 @@ insert into field (cost, matching_date, start_time, end_time, stadium_id, field_
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (60648, '2023-05-12', '2023-02-16 09:14:26', '2022-08-12 12:25:32', 20, 4);
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (70344, '2023-05-14', '2023-01-09 19:09:28', '2023-04-09 16:55:23', 30, 1);
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (74462, '2023-06-28', '2023-05-08 09:46:47', '2023-01-18 12:01:28', 46, 3);
-insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (120000, '2023-09-25', '18:00:00', '20:00:00', 7, 2);
+insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (120000, '2024-03-19', '18:00:00', '20:00:00', 7, 2);
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (85591, '2023-06-27', '2022-11-19 03:14:16', '2022-11-15 18:33:51', 14, 2);
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (61242, '2023-06-15', '2023-01-01 16:12:46', '2023-04-13 19:29:59', 8, 2);
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (60311, '2022-08-29', '2023-05-08 12:28:27', '2023-04-27 01:02:52', 24, 4);
@@ -367,7 +367,7 @@ insert into field (cost, matching_date, start_time, end_time, stadium_id, field_
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (70050, '2023-03-03', '2022-07-26 19:24:25', '2023-04-17 03:25:17', 44, 3);
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (61797, '2023-01-05', '2022-11-22 21:15:40', '2023-06-03 06:30:54', 11, 5);
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (81760, '2022-12-18', '2023-02-01 11:36:39', '2023-03-06 15:38:22', 6, 1);
-insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (120000, '2023-09-25', '18:00:00', '20:00:00', 7, 3);
+insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (120000, '2024-03-19', '18:00:00', '20:00:00', 7, 3);
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (86911, '2022-12-09', '2022-10-14 14:59:52', '2022-09-04 20:20:22', 23, 1);
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (90694, '2023-05-23', '2022-11-10 22:53:33', '2023-05-18 19:54:02', 48, 2);
 insert into field (cost, matching_date, start_time, end_time, stadium_id, field_num) values (99710, '2022-11-09', '2022-07-31 12:41:22', '2022-11-10 09:12:32', 20, 5);
