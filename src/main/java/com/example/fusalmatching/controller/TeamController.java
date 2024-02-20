@@ -58,7 +58,7 @@ public class TeamController {
     }
 
     @PostMapping("/send-email")
-    public String sendEmail(@RequestBody MailDto mailDto) throws MessagingException, IOException {
+    public String sendEmail(@RequestBody MailDto mailDto) throws MessagingException {
         return mailService.sendMail(mailDto);
     }
 
