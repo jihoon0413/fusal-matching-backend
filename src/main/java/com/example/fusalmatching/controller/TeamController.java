@@ -67,10 +67,6 @@ public class TeamController {
         return teamService.checkNum(randomNum);
     }
 
-    @PostMapping("/test")
-    public void test() {
-        System.out.println("==========================>>>>>>>>>>>>> 인증 성공");
-    }
 
 
 
