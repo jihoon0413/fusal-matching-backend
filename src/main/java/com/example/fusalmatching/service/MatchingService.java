@@ -53,7 +53,7 @@ public class MatchingService {
 
     @Transactional
     public void applyMatching(MatchingApplyRequestDto matchingApplyRequestDto) {
-        Optional<Team> team1 = teamRepository.findById(matchingApplyRequestDto.getTeam());
+        Optional<Team> team1 = teamRepository.findById(matchingApplyRequestDto.getTeamId());
         Team team = team1.get();
 
         Optional<MatchingRecord> matchingRecord1 = matchingRecordRepository.findById(matchingApplyRequestDto.getMatchingId());
@@ -76,13 +76,14 @@ public class MatchingService {
             for (TeamMatching teamMatching : teamMatchingList) {
                 if (Objects.equals(matchingCancelRequestDto.getTeamId(), teamMatching.getTeam().getId())) {
                     teamMatchingRepository.delete(teamMatching);
+                    break;
                 }
             }
           Optional<MatchingRecord> matchingRecord1 = matchingRecordRepository.findById(matchingCancelRequestDto.getMatchingId());
           MatchingRecord matchingRecord = matchingRecord1.get();
           matchingRecord.setConfirm(false);
           matchingRecordRepository.save(matchingRecord);
-        } else if (teamMatchingList.size() == 1) {
+        } else if (teamMatchingList.size() == 1 && Objects.equals(matchingCancelRequestDto.getTeamId(), teamMatchingList.get(0).getTeam().getId())) {
             teamMatchingRepository.delete(teamMatchingList.get(0));
             matchingRecordRepository.deleteById(matchingCancelRequestDto.getMatchingId());
 

@@ -27,15 +27,17 @@ public class ReviewService {
 
         Optional<TeamMatching> teamMatching1 = teamMatchingRepository.findById(teamReviewWriteRequestDto.getTeamMatchingId());
         TeamMatching teamMatching = teamMatching1.get();
-        teamMatching.setEvalOpposite(true);
-        teamMatchingRepository.save(teamMatching);
+        if(!teamMatching.isEvalOpposite()) {
+            teamMatching.setEvalOpposite(true);
+            teamMatchingRepository.save(teamMatching);
 
-        Optional<Team> team = teamRepository.findById(teamReviewWriteRequestDto.getOppositeTeamId());
+            Optional<Team> team = teamRepository.findById(teamReviewWriteRequestDto.getOppositeTeamId());
 
-        TeamReview teamReview = TeamReview.of(team.get(), teamReviewWriteRequestDto.getManner(), teamReviewWriteRequestDto.getSkill());
-        teamReview.setCreatedBy(teamMatching.getTeam().getId());
+            TeamReview teamReview = TeamReview.of(team.get(), teamReviewWriteRequestDto.getManner(), teamReviewWriteRequestDto.getSkill());
+            teamReview.setCreatedBy(teamMatching.getTeam().getId());
 
-        teamReviewRepository.save(teamReview);
+            teamReviewRepository.save(teamReview);
+        }
     }
 
     @Transactional
@@ -43,20 +45,19 @@ public class ReviewService {
 
         Optional<TeamMatching> teamMatching1 = teamMatchingRepository.findById(stadiumReviewWriteRequestDto.getTeamMatchingId());
         TeamMatching teamMatching = teamMatching1.get();
-        teamMatching.setEvalStadium(true);
-        teamMatchingRepository.save(teamMatching);
+        if(!teamMatching.isEvalStadium()) {
+            teamMatching.setEvalStadium(true);
+            teamMatchingRepository.save(teamMatching);
 
-        Optional<Stadium> stadium = stadiumRepository.findById(stadiumReviewWriteRequestDto.getStadiumId());
 
-        StadiumReview stadiumReview = StadiumReview.of(stadium.get(), stadiumReviewWriteRequestDto.getGpa(), stadiumReviewWriteRequestDto.getReview());
-        stadiumReview.setCreatedBy(teamMatching.getTeam().getId());
+            Optional<Stadium> stadium = stadiumRepository.findById(teamMatching.getMatchingRecord().getStadium().getId());
 
-        stadiumReviewRepository.save(stadiumReview);
+            StadiumReview stadiumReview = StadiumReview.of(stadium.get(), stadiumReviewWriteRequestDto.getGpa(), stadiumReviewWriteRequestDto.getReview());
+            stadiumReview.setCreatedBy(teamMatching.getTeam().getId());
+
+            stadiumReviewRepository.save(stadiumReview);
+        }
     }
-
-
-
-
 
 
 }

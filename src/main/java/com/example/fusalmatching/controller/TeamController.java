@@ -58,7 +58,7 @@ public class TeamController {
     }
 
     @PostMapping("/send-email")
-    public String sendEmail(@RequestBody MailDto mailDto) throws MessagingException, IOException {
+    public String sendEmail(@RequestBody MailDto mailDto) throws MessagingException {
         return mailService.sendMail(mailDto);
     }
 
@@ -67,10 +67,6 @@ public class TeamController {
         return teamService.checkNum(randomNum);
     }
 
-    @PostMapping("/test")
-    public void test() {
-        System.out.println("==========================>>>>>>>>>>>>> 인증 성공");
-    }
 
 
 

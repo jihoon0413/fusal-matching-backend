@@ -40,9 +40,8 @@ public class StadiumService {
                 .collect(Collectors.toList());
 
         return collect;
-
-
     }
+
 
     private StadiumReviewResponseDto entityToDtoReview(StadiumReview stadiumReview) {
         var dto = new StadiumReviewResponseDto();
@@ -51,32 +50,6 @@ public class StadiumService {
         dto.setWriter(stadiumReview.getCreatedBy());
         return dto;
     }
-
-
-
-
-//    public void createFieldAuto(Long id) {
-//
-//        Optional<Stadium> stadium1 = stadiumRepository.findById(id);
-//
-//        Stadium stadium = stadium1.get();
-//        int fieldCount1 = stadium.getFieldCount();
-//        String cost = stadium.getCost();
-//
-//        SimpleDateFormat time1 = new SimpleDateFormat("HH:mm");
-//        SimpleDateFormat date1 = new SimpleDateFormat("yy-MM-dd");
-//        Time startTime = Time.valueOf(time1.format("18:00"));
-//        Time endTime = Time.valueOf(time1.format("20:00"));
-//
-//
-//
-//
-//        Field field = Field.of(stadium, java.sql.Date.valueOf("2022-04-09"), startTime, endTime, "50,000");
-//
-//        fieldRepository.save(field);
-//
-//    }
-
 
 
 
@@ -108,6 +81,7 @@ public class StadiumService {
         return dto;
     }
 
+
     public StadiumResponseDto.ImageDto setImageDto(StadiumImage stadiumImage) {
         var imageDto = new StadiumResponseDto.ImageDto();
         imageDto.setUrl(stadiumImage.getImageURl());
@@ -123,8 +97,8 @@ public class StadiumService {
                         .collect(Collectors.toList());
 
         return collect;
-
     }
+
 
     public FieldResponseDto compareDate(Field field, Date date, Time time) {
 
@@ -155,15 +129,13 @@ public class StadiumService {
                 }
                 dto.setTeam(teams);
             }
-
-
             return dto;
         }
         return null;
     }
 
-    public FieldResponseDto getFieldResponseDto(Field field, Long matchingId) {
 
+    public FieldResponseDto getFieldResponseDto(Field field, Long matchingId) {
 
             var dto =new FieldResponseDto();
             dto.setId(field.getId());
@@ -185,8 +157,6 @@ public class StadiumService {
             }
             dto.setTeam(teams);
 
-
-
             return dto;
     }
 
@@ -204,4 +174,28 @@ public class StadiumService {
                 teamDto.setEvalStadium(teamMatching.isEvalStadium());
         return teamDto;
     }
+
+
+//    public void createFieldAuto(Long id) {
+//
+//        Optional<Stadium> stadium1 = stadiumRepository.findById(id);
+//
+//        Stadium stadium = stadium1.get();
+//        int fieldCount1 = stadium.getFieldCount();
+//        String cost = stadium.getCost();
+//
+//        SimpleDateFormat time1 = new SimpleDateFormat("HH:mm");
+//        SimpleDateFormat date1 = new SimpleDateFormat("yy-MM-dd");
+//        Time startTime = Time.valueOf(time1.format("18:00"));
+//        Time endTime = Time.valueOf(time1.format("20:00"));
+//
+//
+//
+//
+//        Field field = Field.of(stadium, java.sql.Date.valueOf("2022-04-09"), startTime, endTime, "50,000");
+//
+//        fieldRepository.save(field);
+//
+//    }
+
 }

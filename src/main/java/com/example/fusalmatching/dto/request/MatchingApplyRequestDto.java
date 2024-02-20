@@ -6,7 +6,5 @@ import lombok.Getter;
 public class MatchingApplyRequestDto {
 
     private Long matchingId;
-    private String team;
-    private Long stadium;
-    private Long field;
+    private String teamId;
 }

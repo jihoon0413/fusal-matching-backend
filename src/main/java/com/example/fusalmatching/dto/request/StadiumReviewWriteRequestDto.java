@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 public class StadiumReviewWriteRequestDto {
     private Long teamMatchingId;
-    private Long stadiumId;
     private int gpa;
     private String review;
 
