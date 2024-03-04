@@ -29,6 +29,11 @@ public class StadiumController {
         return stadiumService.getStadiumList();
     }
 
+    @GetMapping("/myList")
+    public List<StadiumResponseDto> getStadiums(@RequestParam String id) {
+        return stadiumService.getStadiumList(id);
+    }
+
     @GetMapping("/reviews")
     public List<StadiumReviewResponseDto> getReviews(@RequestParam Long id) {
         return stadiumService.getReviewList(id);

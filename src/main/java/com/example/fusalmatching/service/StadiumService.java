@@ -28,7 +28,14 @@ public class StadiumService {
     @Transactional
     public List<StadiumResponseDto> getStadiumList() {
         return stadiumRepository.findAll()
-                .stream().map(it -> entityToDto(it))
+                .stream().map(it -> entityToStadiumDto(it))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<StadiumResponseDto> getStadiumList(String id) {
+        return stadiumRepository.findAllByManagerId(id)
+                .stream().map(it -> entityToStadiumDto(it))
                 .collect(Collectors.toList());
     }
 
@@ -36,14 +43,14 @@ public class StadiumService {
     public List<StadiumReviewResponseDto> getReviewList(Long id) {
 
         List<StadiumReviewResponseDto> collect = stadiumReviewRepository.findAllByStadiumId(id)
-                .stream().map(it -> entityToDtoReview(it))
+                .stream().map(it -> entityToStadiumReviewDto(it))
                 .collect(Collectors.toList());
 
         return collect;
     }
 
 
-    private StadiumReviewResponseDto entityToDtoReview(StadiumReview stadiumReview) {
+    private StadiumReviewResponseDto entityToStadiumReviewDto(StadiumReview stadiumReview) {
         var dto = new StadiumReviewResponseDto();
         dto.setGpa(stadiumReview.getGpa());
         dto.setReview(stadiumReview.getReview());
@@ -53,7 +60,7 @@ public class StadiumService {
 
 
 
-    private StadiumResponseDto entityToDto(Stadium stadium) {
+    private StadiumResponseDto entityToStadiumDto(Stadium stadium) {
         var dto = new StadiumResponseDto();
         dto.setId(stadium.getId());
         dto.setStadiumName(stadium.getStadiumName());
