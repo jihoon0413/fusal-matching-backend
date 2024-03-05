@@ -20,6 +20,10 @@ public class Manager extends AuditingFields{
 
     @Setter private String password;
 
+    @Setter private String tel;
+
+    @Setter private String email;
+
     @OneToMany(mappedBy = "manager")
     @ToString.Exclude
     private final Set<Stadium> stadiums = new LinkedHashSet<>();
