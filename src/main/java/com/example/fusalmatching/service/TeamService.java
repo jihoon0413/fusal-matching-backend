@@ -45,14 +45,28 @@ public class TeamService {
     private final StadiumService stadiumService;
 
     @Transactional
-    public void createTeam(TeamSignDto teamSignDto) {
-        
-        String hashedPassword = passwordEncoder.encode(teamSignDto.getPassword());           //TODO: 아이디, 닉네임 중복확인 해야함
-        Team newTeam = Team.of(teamSignDto.getId(), teamSignDto.getTeamName(), hashedPassword, teamSignDto.getCaptainName(), teamSignDto.getTel(), teamSignDto.getEmail());
-        teamRepository.save(newTeam);
+    public void createTeam(TeamSignDto teamSignDto) throws Exception {
+        try {
+            String hashedPassword = passwordEncoder.encode(teamSignDto.getPassword());
 
+                Team newTeam = Team.of(teamSignDto.getId(), teamSignDto.getTeamName(), hashedPassword, teamSignDto.getCaptainName(), teamSignDto.getTel(), teamSignDto.getEmail());
+                teamRepository.save(newTeam);
+
+        } catch (Exception e) {
+            throw new Exception("에러 발생");
+        }
     }
 
+    public void modifyTeam(TeamSignDto teamSignDto) {
+
+        Optional<Team> optional = teamRepository.findById(teamSignDto.getId());
+        Team team = optional.get();
+//        team.setTeamName(teamSignDto.getTeamName());
+        String hashedPassword = passwordEncoder.encode(teamSignDto.getPassword());
+
+//        Team modifiedTeam = Team.of(teamSignDto.getId(), teamSignDto.getTeamName(), hashedPassword, teamSignDto.getCaptainName(), teamSignDto.getTel(), teamSignDto.getEmail());
+        teamRepository.save(team);
+    }
 
     @Transactional
     public JwtToken login(String id, String password) {
@@ -174,12 +188,12 @@ public class TeamService {
 
     @Transactional
     public boolean checkId(CheckRequestDto id) {
-        return this.teamRepository.findById(id.getIdORNick()).isEmpty();
+        return teamRepository.findById(id.getIdORNick()).isEmpty();
     }
     
     @Transactional
     public boolean checkName(CheckRequestDto id) {
-        return this.teamRepository.findByTeamName(id.getIdORNick()).isEmpty();
+        return teamRepository.findByTeamName(id.getIdORNick()).isEmpty();
     }
 
     public boolean checkNum(CheckRandomNumDto randomNum) {
@@ -188,4 +202,6 @@ public class TeamService {
 
 
     }
+
+
 }

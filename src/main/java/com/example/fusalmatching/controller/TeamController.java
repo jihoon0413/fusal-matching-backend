@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -33,10 +34,13 @@ public class TeamController {
     }
 
     @PostMapping("/new")
-    public void createTeam(@RequestBody TeamSignDto teamSignDto) {
-
+    public void createTeam(@RequestBody TeamSignDto teamSignDto) throws Exception {
         teamService.createTeam(teamSignDto);
+    }
 
+    @PostMapping("/modify")
+    public void modifyTeam(@RequestBody TeamSignDto teamSignDto) {
+        teamService.modifyTeam(teamSignDto);
     }
 
     @PostMapping("/check-id")
@@ -58,7 +62,7 @@ public class TeamController {
     }
 
     @PostMapping("/send-email")
-    public String sendEmail(@RequestBody MailDto mailDto) throws MessagingException {
+    public String sendEmail(@RequestBody MailDto mailDto) throws MessagingException, InvalidPropertiesFormatException {
         return mailService.sendMail(mailDto);
     }
 

@@ -7,6 +7,7 @@ import lombok.*;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class MailDto {
+    private String id;
     private String email;
 
 }
