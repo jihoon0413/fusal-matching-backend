@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
-import java.io.IOException;
 import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 
@@ -34,12 +33,12 @@ public class TeamController {
     }
 
     @PostMapping("/new")
-    public void createTeam(@RequestBody TeamSignDto teamSignDto) throws Exception {
+    public void createTeam(@RequestBody TeamSignRequestDto teamSignDto) throws Exception {
         teamService.createTeam(teamSignDto);
     }
 
-    @PostMapping("/modify")
-    public void modifyTeam(@RequestBody TeamSignDto teamSignDto) {
+    @PostMapping("/modifyProfile")
+    public void modifyTeam(@RequestBody TeamModifyProfileRequestDto teamSignDto) {
         teamService.modifyTeam(teamSignDto);
     }
 

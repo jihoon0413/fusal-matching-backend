@@ -8,7 +8,8 @@ import com.example.fusalmatching.domain.TeamMatching;
 import com.example.fusalmatching.domain.TeamReview;
 import com.example.fusalmatching.dto.request.CheckRandomNumDto;
 import com.example.fusalmatching.dto.request.CheckRequestDto;
-import com.example.fusalmatching.dto.request.TeamSignDto;
+import com.example.fusalmatching.dto.request.TeamModifyProfileRequestDto;
+import com.example.fusalmatching.dto.request.TeamSignRequestDto;
 import com.example.fusalmatching.dto.response.FieldResponseDto;
 import com.example.fusalmatching.dto.response.TeamResponseDto;
 import com.example.fusalmatching.dto.response.TeamReviewResponseDto;
@@ -24,10 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -45,7 +43,7 @@ public class TeamService {
     private final StadiumService stadiumService;
 
     @Transactional
-    public void createTeam(TeamSignDto teamSignDto) throws Exception {
+    public void createTeam(TeamSignRequestDto teamSignDto) throws Exception {
         try {
             String hashedPassword = passwordEncoder.encode(teamSignDto.getPassword());
 
@@ -56,15 +54,42 @@ public class TeamService {
             throw new Exception("에러 발생");
         }
     }
+    @Transactional
+    public void modifyTeam(TeamModifyProfileRequestDto modifiedProfile) {
 
-    public void modifyTeam(TeamSignDto teamSignDto) {
-
-        Optional<Team> optional = teamRepository.findById(teamSignDto.getId());
+        Optional<Team> optional = teamRepository.findById(modifiedProfile.getId());
         Team team = optional.get();
-//        team.setTeamName(teamSignDto.getTeamName());
-        String hashedPassword = passwordEncoder.encode(teamSignDto.getPassword());
 
-//        Team modifiedTeam = Team.of(teamSignDto.getId(), teamSignDto.getTeamName(), hashedPassword, teamSignDto.getCaptainName(), teamSignDto.getTel(), teamSignDto.getEmail());
+        StringTokenizer st = new StringTokenizer(modifiedProfile.getModifiedInfo(), "/");
+        int count = st.countTokens();
+
+        for(int i = 0 ; i < count ; i++) {
+            switch (st.nextToken()) {
+//                case "id":
+//                    team.setId(modifiedProfile.getModifiedId());
+//                    break;
+                case "password":
+                    String hashedPassword = passwordEncoder.encode(modifiedProfile.getPassword());
+                    team.setPassword(hashedPassword);
+                    break;
+                case "teamName":
+                    team.setTeamName(modifiedProfile.getTeamName());
+                    break;
+                case "captainName":
+                    team.setCaptainName(modifiedProfile.getCaptainName());
+                    break;
+                case "tel":
+                    team.setTel(modifiedProfile.getTel());
+                    break;
+                case "email":
+                    team.setEmail(modifiedProfile.getEmail());
+                    break;
+                case "imgUrl":
+                    team.setImgUrl(modifiedProfile.getImgUrl());
+                    break;
+            }
+        }
+
         teamRepository.save(team);
     }
 
