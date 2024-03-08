@@ -99,46 +99,37 @@ public class StadiumService {
 
     public List<FieldResponseDto> getFieldList(Long id, Date date, Time time) {
 
-        List<FieldResponseDto> collect = fieldRepository.findAllByStadiumId(id)
-                        .stream().map(it -> compareDate(it, date, time))
+        return fieldRepository.findAllByStartTimeAndMatchingDate(time, date)
+                        .stream().map(this::entityToFieldResponseDto)
                         .collect(Collectors.toList());
-
-        return collect;
     }
 
-
-    public FieldResponseDto compareDate(Field field, Date date, Time time) {
-
-        if(Objects.equals(String.valueOf(date), String.valueOf(field.getMatchingDate())) && Objects.equals(String.valueOf(time), String.valueOf(field.getStartTime()))) {
-            var dto =new FieldResponseDto();
-            dto.setId(field.getId());
-            dto.setStadiumId(field.getStadium().getId());
-            dto.setStadiumName(field.getStadium().getStadiumName());
-            dto.setMatchingDate(String.valueOf(field.getMatchingDate()));
-            dto.setStartTime(String.valueOf(field.getStartTime()));
-            dto.setEndTime(String.valueOf(field.getEndTime()));
-            dto.setFieldNum(field.getFieldNum());
+    public FieldResponseDto entityToFieldResponseDto(Field field) {
+        var dto =new FieldResponseDto();
+        dto.setId(field.getId());
+        dto.setStadiumId(field.getStadium().getId());
+        dto.setStadiumName(field.getStadium().getStadiumName());
+        dto.setMatchingDate(String.valueOf(field.getMatchingDate()));
+        dto.setStartTime(String.valueOf(field.getStartTime()));
+        dto.setEndTime(String.valueOf(field.getEndTime()));
+        dto.setFieldNum(field.getFieldNum());
 
 
-            if(matchingRecordRepository.findByField_Id(field.getId()).isPresent()){
-                Optional<MatchingRecord> matchingRecord1 = matchingRecordRepository.findByField_Id(field.getId());
-                MatchingRecord matchingRecord = matchingRecord1.get();
-                dto.setMatchingId(matchingRecord.getId());
-                dto.setConfirm(matchingRecord.isConfirm());
-                dto.setAllRental(matchingRecord.isAllRental());
+            Optional<MatchingRecord> matchingRecord1 = matchingRecordRepository.findByField_Id(field.getId());
+            MatchingRecord matchingRecord = matchingRecord1.get();
+            dto.setMatchingId(matchingRecord.getId());
+            dto.setConfirm(matchingRecord.isConfirm());
+            dto.setAllRental(matchingRecord.isAllRental());
 
-                List<FieldResponseDto.TeamDto> teams = new ArrayList<>();
+            List<FieldResponseDto.TeamDto> teams = new ArrayList<>();
 
-                List<TeamMatching> teamMatching1 = teamMatchingRepository.findAllByMatchingRecord_Id(matchingRecord.getId());
+            List<TeamMatching> teamMatching1 = teamMatchingRepository.findAllByMatchingRecord_Id(matchingRecord.getId());
 
-                for(int i = 0 ; i < teamMatching1.size() ; i++) {
-                    teams.add(setTeamDto(teamMatching1.get(i)));
-                }
-                dto.setTeam(teams);
+            for(int i = 0 ; i < teamMatching1.size() ; i++) {
+                teams.add(setTeamDto(teamMatching1.get(i)));
             }
-            return dto;
-        }
-        return null;
+            dto.setTeam(teams);
+        return dto;
     }
 
 
