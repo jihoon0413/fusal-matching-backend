@@ -37,6 +37,9 @@ public class Stadium extends AuditingFields{
     @OneToMany(mappedBy = "stadium")
     private final Set<StadiumImage> stadiumImages = new LinkedHashSet<>();
 
+    @OneToOne
+    private TimeTable timeTable;
+
     @Setter private String stadiumName;
     @Setter private String address;
     @Setter private String tel;
