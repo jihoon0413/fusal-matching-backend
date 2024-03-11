@@ -54,9 +54,12 @@ spring:
 
 ---
 
+
 spring:
   config.activate.on-profile: heroku
   datasource:
+    hikari:
+      maximum-pool-size: 20
     url: ${JAWSDB_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa.hibernate.ddl-auto: create
