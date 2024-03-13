@@ -1,5 +1,6 @@
 package com.example.fusalmatching.domain;
 
+import com.example.fusalmatching.dto.Role;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -28,20 +29,26 @@ public class Manager extends AuditingFields{
     @ToString.Exclude
     private final Set<Stadium> stadiums = new LinkedHashSet<>();
 
+    @Enumerated(EnumType.STRING)
+    private Role userRole = Role.MANAGER;
+
 
 
 
 
     public Manager() {}
 
-    protected Manager(String id, String password) {
+    protected Manager(String id, String password, String tel, String email) {
         this.id = id;
         this.password = password;
+        this.tel = tel;
+        this.email = email;
+
     }
 
-    public static Manager of(String id, String password) {
+    public static Manager of(String id, String password, String tel, String email) {
 
-        return new Manager(id, password);
+        return new Manager(id, password, tel, email);
     }
 
     @Override
@@ -49,11 +56,11 @@ public class Manager extends AuditingFields{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Manager manager = (Manager) o;
-        return Objects.equals(id, manager.id) && Objects.equals(password, manager.password) && Objects.equals(stadiums, manager.stadiums);
+        return Objects.equals(id, manager.id) && Objects.equals(password, manager.password) && Objects.equals(tel, manager.tel) && Objects.equals(email, manager.email) && Objects.equals(stadiums, manager.stadiums) && userRole == manager.userRole;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, password, stadiums);
+        return Objects.hash(id, password, tel, email, stadiums, userRole);
     }
 }

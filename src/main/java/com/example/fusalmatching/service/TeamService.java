@@ -110,7 +110,7 @@ public class TeamService {
     }
 
     @Transactional
-    public TeamResponseDto getTeam(String id) {
+    public TeamResponseDto getMyPage(String id) {
             Optional<Team> collect = teamRepository.findById(id);
             Team team = collect.get();
             return entityToDto(team);

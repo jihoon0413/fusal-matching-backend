@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
         @Index(columnList = "teamName")
 })
 @Entity
-public class Team extends AuditingFields implements UserDetails {
+public class Team extends AuditingFields{
 
 
 
@@ -56,6 +56,9 @@ public class Team extends AuditingFields implements UserDetails {
 
 
 
+    @Enumerated(EnumType.STRING)
+    private Role userRole = Role.USER;
+
 
 
 
@@ -68,57 +71,11 @@ public class Team extends AuditingFields implements UserDetails {
         this.captainName = captainName;
         this.tel = tel;
         this.email = email;
+//        hasRole.add(String.valueOf(Role.USER));
     }
 
     public static Team of(String teamId, String teamName, String password,  String captainName, String tel, String email) {
         return new Team(teamId, teamName, password, captainName, tel, email);
-    }
-
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
-
-//    Role roles;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        this.roles.add("USER");
-
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public String getUsername() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 
 
@@ -127,11 +84,11 @@ public class Team extends AuditingFields implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Team team = (Team) o;
-        return manner == team.manner && skill == team.skill && evaluationCount == team.evaluationCount && Objects.equals(id, team.id) && Objects.equals(password, team.password) && Objects.equals(teamName, team.teamName) && Objects.equals(teamReviews, team.teamReviews) && Objects.equals(teamMatching, team.teamMatching) && Objects.equals(captainName, team.captainName) && Objects.equals(tel, team.tel) && Objects.equals(email, team.email) && Objects.equals(imgUrl, team.imgUrl) && Objects.equals(roles, team.roles);
+        return manner == team.manner && skill == team.skill && evaluationCount == team.evaluationCount && Objects.equals(id, team.id) && Objects.equals(password, team.password) && Objects.equals(teamName, team.teamName) && Objects.equals(teamReviews, team.teamReviews) && Objects.equals(teamMatching, team.teamMatching) && Objects.equals(captainName, team.captainName) && Objects.equals(tel, team.tel) && Objects.equals(email, team.email) && Objects.equals(imgUrl, team.imgUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, password, teamName, teamReviews, teamMatching, captainName, tel, email, imgUrl, manner, skill, evaluationCount, roles);
+        return Objects.hash(id, password, teamName, teamReviews, teamMatching, captainName, tel, email, imgUrl, manner, skill, evaluationCount);
     }
 }
