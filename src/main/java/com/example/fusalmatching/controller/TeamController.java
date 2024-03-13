@@ -22,9 +22,9 @@ public class TeamController {
     private final MailService mailService;
 
     @GetMapping
-    public TeamResponseDto getTeamList(@RequestParam String id) {
+    public TeamResponseDto getMyPage(@RequestParam String id) {
 
-        return teamService.getTeam(id);
+        return teamService.getMyPage(id);
     }
 
     @GetMapping("/reviews")
@@ -53,9 +53,9 @@ public class TeamController {
     }
 
     @PostMapping("/login")
-    public JwtToken login(@RequestBody TeamLoginRequestDto teamLoginRequestDto) {
-        String id = teamLoginRequestDto.getId();
-        String password = teamLoginRequestDto.getPassword();
+    public JwtToken login(@RequestBody LoginRequestDto loginRequestDto) {
+        String id = loginRequestDto.getId();
+        String password = loginRequestDto.getPassword();
 
         return teamService.login(id,password);
     }
@@ -70,7 +70,10 @@ public class TeamController {
         return teamService.checkNum(randomNum);
     }
 
-
+    @PostMapping("/test")
+    public void test() {
+        System.out.println("==========================>>>>>>>>>>>>> 인증 성공");
+    }
 
 
 
