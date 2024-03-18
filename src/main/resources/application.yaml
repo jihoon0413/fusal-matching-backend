@@ -9,39 +9,54 @@ logging:
 
 spring:
   datasource:
-    url: ${LOCAL_DB_URL}
-    username: ${LOCAL_DB_USERNAME}
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://${DB_url}:${DB_port}/${DB_dataBaseName}?characterEncoding=UTF-8&serverTimezone=UTC
+#    url: jdbc:mariadb://localhost:3306/fusal?characterEncoding=UTF-8&serverTimezone=UTC
+    username: ${DB_user}
     password: ${LOCAL_DB_PASSWORD}
-    driver-class-name: com.mariadb.cj.jdbc.Driver
-#    initialization-mode: always
-
-  jwt:
-    secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
 
   jpa:
-    database: mysql   # ?? ?? ??
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect # ?? ?? ??
-    open-in-view: false
+    hibernate:
+      ddl-auto: create
     defer-datasource-initialization: true
-    hibernate.ddl-auto: create
-    show-sql: true
+    open-in-view: false
     properties:
-      hibernate.format_sql: true
-      hibernate.default_batch_fetch_size: 100
-  # h2 test ?? ??? ?
-  #  h2.console.enabled: true
+      hibernate:
+        format_sql: true #To beautify or pretty print the SQL
+        show_sql: true #show sql
+
+#spring:
+#  datasource:
+#    url: ${LOCAL_DB_URL}
+#    username: ${LOCAL_DB_USERNAME}
+#    password: ${LOCAL_DB_PASSWORD}
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#
+#
+#  jpa:
+#    database: mysql   # ?? ?? ??
+#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect # ?? ?? ??
+#    open-in-view: false
+#    defer-datasource-initialization: true
+#    hibernate.ddl-auto: create
+#    show-sql: true
+#    properties:
+#      hibernate.format_sql: true
+#      hibernate.default_batch_fetch_size: 100
+
+
   sql.init.mode: always
   data.rest:
     base-path: /api
     detection-strategy: annotated
   thymeleaf3:
     decoupled-logic: true
-  # h2 test ?? ??? ?
-  #    url: jdbc:h2:mem:testdb
-  #    username: sa
-  #    driver-class-name: org.h2.Driver
+
   thymeleaf:
     check-template-location: false
+
+  jwt:
+    secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
 
   mail:
     host: smtp.gmail.com
@@ -50,6 +65,7 @@ spring:
     password: ${MAIL_PASSWORD}
     properties.mail.smtp.auth: true
     properties.mail.smtp.starttls.enable: true
+
 
 
 ---
