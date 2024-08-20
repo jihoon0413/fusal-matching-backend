@@ -2,9 +2,16 @@ package com.example.fusalmatching.service;
 
 import com.example.fusalmatching.config.jwt.JwtToken;
 import com.example.fusalmatching.config.jwt.JwtTokenProvider;
+import com.example.fusalmatching.domain.Field;
 import com.example.fusalmatching.domain.Manager;
+import com.example.fusalmatching.domain.MatchingRecord;
+import com.example.fusalmatching.domain.Stadium;
 import com.example.fusalmatching.dto.request.ManagerSignRequestDto;
+import com.example.fusalmatching.dto.response.ManagerResponseDto;
+import com.example.fusalmatching.repository.FieldRepository;
 import com.example.fusalmatching.repository.ManagerRepository;
+import com.example.fusalmatching.repository.MatchingRecordRepository;
+import com.example.fusalmatching.repository.StadiumRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,6 +19,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 
 @Transactional(readOnly = true)
@@ -23,6 +36,9 @@ public class ManagerService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final StadiumRepository stadiumRepository;
+    private final MatchingRecordRepository matchingRecordRepository;
+    private final FieldRepository fieldRepository;
 
     @Transactional
     public void createManager(ManagerSignRequestDto managerSignDto) throws Exception {
@@ -56,5 +72,90 @@ public class ManagerService {
 
     }
 
+
+    @Transactional
+    public ManagerResponseDto getMyPage(String id) {
+
+        Optional<Manager> collect = managerRepository.findById(id);
+        Manager manager = collect.get();
+
+
+
+
+        return null;
+    }
+
+    private ManagerResponseDto entityToDto(Manager manager) {
+
+        List<Stadium> stadiumIds = stadiumRepository.findAllByManagerId(manager.getId());
+
+        var dto = new ManagerResponseDto();
+        dto.setId(manager.getId());
+        dto.setTel(manager.getTel());
+        dto.setStadiums(getstadiumList(manager.getId()));
+        dto.setMatchingRecords(getMatchingRecordList(manager.getId()));
+        return dto;
+    }
+
+    private List<ManagerResponseDto.Stadium> getstadiumList(String managerId) {
+
+        List<ManagerResponseDto.Stadium> stadiumLists = new ArrayList<>();
+
+        List<Stadium> stadiums = stadiumRepository.findAllByManagerId(managerId);
+
+        for(Stadium stadium : stadiums) {
+            var stadiumDto = new ManagerResponseDto.Stadium();
+            stadiumDto.setId(stadium.getId());
+            stadiumDto.setStadiumName(stadium.getStadiumName());
+            stadiumDto.setAddress(stadium.getAddress());
+            stadiumDto.setTel(stadium.getTel());
+            stadiumDto.setFieldCount(stadium.getFieldCount());
+            stadiumDto.setNoRest(stadium.isNoRest());
+            stadiumDto.setParking(stadium.isParking());
+            stadiumDto.setShower(stadium.isShower());
+            stadiumDto.setGpa(stadium.getGpa());
+
+            stadiumLists.add(stadiumDto);
+        }
+
+        return stadiumLists;
+    }
+
+    private List<ManagerResponseDto.MatchingRecordDto> getMatchingRecordList(String managerId) {
+
+        List<ManagerResponseDto.MatchingRecordDto> matchingRecordDtoList = new ArrayList<>();
+
+        List<Long> stadiumIds = new ArrayList<>();
+
+        List<Stadium> stadiums = stadiumRepository.findAllByManagerId(managerId);
+
+        for(Stadium stadium : stadiums) {
+
+            Long stadiumId = stadium.getId();
+            String stadiumName = stadium.getStadiumName();
+
+            List<MatchingRecord> matchingRecordList = matchingRecordRepository.findAllByStadiumId(stadiumId)
+                    .stream()
+                    .filter(it -> !it.isConfirm())
+                    .toList();
+
+            for (MatchingRecord matchingRecord : matchingRecordList) {
+                var matchingRecordDto = new ManagerResponseDto.MatchingRecordDto();
+
+                Field field = fieldRepository.getReferenceById(matchingRecord.getField().getId());
+
+                matchingRecordDto.setId(matchingRecord.getId());
+                matchingRecordDto.setStadiumName(stadiumName);
+                matchingRecordDto.setMatchingDate(String.valueOf(field.getMatchingDate()));
+                matchingRecordDto.setFieldNum(field.getFieldNum());
+                matchingRecordDto.setAllRental(matchingRecord.isAllRental());
+
+                matchingRecordDtoList.add(matchingRecordDto);
+            }
+
+        }
+
+        return matchingRecordDtoList;
+    }
 
 }

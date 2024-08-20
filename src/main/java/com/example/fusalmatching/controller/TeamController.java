@@ -2,7 +2,7 @@ package com.example.fusalmatching.controller;
 
 import com.example.fusalmatching.config.jwt.JwtToken;
 import com.example.fusalmatching.dto.request.*;
-import com.example.fusalmatching.dto.response.TeamResponseDto;
+import com.example.fusalmatching.dto.response.MyPageDto;
 import com.example.fusalmatching.dto.response.TeamReviewResponseDto;
 import com.example.fusalmatching.service.MailService;
 import com.example.fusalmatching.service.TeamService;
@@ -22,9 +22,9 @@ public class TeamController {
     private final MailService mailService;
 
     @GetMapping
-    public TeamResponseDto getMyPage(@RequestParam String id) {
+    public MyPageDto getMyPage(@RequestParam String id) {
 
-        return teamService.getMyPage(id);
+        return teamService.getMypageDto(id);
     }
 
     @GetMapping("/reviews")
