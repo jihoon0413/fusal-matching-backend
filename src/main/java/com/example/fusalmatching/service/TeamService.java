@@ -2,7 +2,6 @@ package com.example.fusalmatching.service;
 
 import com.example.fusalmatching.config.jwt.JwtToken;
 import com.example.fusalmatching.config.jwt.JwtTokenProvider;
-import com.example.fusalmatching.domain.Field;
 import com.example.fusalmatching.domain.Team;
 import com.example.fusalmatching.domain.TeamMatching;
 import com.example.fusalmatching.domain.TeamReview;
@@ -10,9 +9,7 @@ import com.example.fusalmatching.dto.request.CheckRandomNumDto;
 import com.example.fusalmatching.dto.request.CheckRequestDto;
 import com.example.fusalmatching.dto.request.TeamModifyProfileRequestDto;
 import com.example.fusalmatching.dto.request.TeamSignRequestDto;
-import com.example.fusalmatching.dto.response.FieldResponseDto;
-import com.example.fusalmatching.dto.response.TeamResponseDto;
-import com.example.fusalmatching.dto.response.TeamReviewResponseDto;
+import com.example.fusalmatching.dto.response.*;
 import com.example.fusalmatching.repository.MatchingRecordRepository;
 import com.example.fusalmatching.repository.TeamMatchingRepository;
 import com.example.fusalmatching.repository.TeamRepository;
@@ -109,86 +106,29 @@ public class TeamService {
 
     }
 
+
+    //TODO dto 바꾸기
     @Transactional
-    public TeamResponseDto getMyPage(String id) {
-            Optional<Team> collect = teamRepository.findById(id);
-            Team team = collect.get();
-            return entityToDto(team);
+    public MyPageDto getMypageDto(String id) {
+//        Optional<Team> collect = teamRepository.findById(id);
+        Team team = teamRepository.findById(id).get();
 
-    }
+        List<MatchingRecordDto> matchingRecordTempList = new ArrayList<>();
 
-    private TeamResponseDto entityToDto(Team team) {
-        var dto = new TeamResponseDto();
-        dto.setId(team.getId());
-        dto.setTeamName(team.getTeamName());
-        dto.setCaptainName(team.getCaptainName());
-        dto.setTel(team.getTel());
-        dto.setImageUrl(team.getImgUrl());
-        dto.setManner(team.getManner());
-        dto.setSkill(team.getSkill());
-        dto.setMatchingRecordList(getMatchingRecordList(team.getId()));
-        return dto;
-    }
-
-    @Transactional
-    private List<TeamResponseDto.MatchingRecordListDto> getMatchingRecordList(String id) {
-
-        List<TeamMatching> teamMatchingList = teamMatchingRepository.findAllByTeam_Id(id);
-
-        List<TeamResponseDto.MatchingRecordListDto> matchingRecordDtoList = new ArrayList<>();
-
+        List<TeamMatching> teamMatchingList = teamMatchingRepository.findAllByTeam_Id(team.getId());
 
         for (TeamMatching teamMatching : teamMatchingList) {
-            var matchingRecordDto = new TeamResponseDto.MatchingRecordListDto();
-            matchingRecordDto.setMatchingRecord(getMatchingRecordDto(teamMatching.getMatchingRecord().getField(), teamMatching.getMatchingRecord().getId(), id));
-            matchingRecordDtoList.add(matchingRecordDto);
-        }
-        return matchingRecordDtoList;
-    }
+            Long matchingId = teamMatching.getMatchingRecord().getId();
+            boolean confirm = matchingRecordRepository.findById(matchingId).get().isConfirm();
+            boolean allRental = matchingRecordRepository.findById(matchingId).get().isAllRental();
 
+            List<TeamMatching> teamMatching1 = teamMatchingRepository.findAllByMatchingRecord_Id(matchingId);
 
-    public TeamResponseDto.MatchingRecordDto getMatchingRecordDto(Field field, Long matchingId, String id) {
-
-
-        var dto =new TeamResponseDto.MatchingRecordDto();
-        dto.setId(field.getId());
-        dto.setStadiumId(field.getStadium().getId());
-        dto.setStadiumName(field.getStadium().getStadiumName());
-        dto.setMatchingDate(String.valueOf(field.getMatchingDate()));
-        dto.setStartTime(String.valueOf(field.getStartTime()));
-        dto.setEndTime(String.valueOf(field.getEndTime()));
-        dto.setFieldNum(field.getFieldNum());
-        dto.setMatchingId(matchingId);
-        dto.setConfirm(matchingRecordRepository.findById(matchingId).get().isConfirm());
-        dto.setAllRental(matchingRecordRepository.findById(matchingId).get().isAllRental());
-
-        List<FieldResponseDto.TeamDto> teams = new ArrayList<>();
-        List<TeamMatching> teamMatching1 = teamMatchingRepository.findAllByMatchingRecord_Id(matchingId);
-
-        for (TeamMatching teamMatching : teamMatching1) {
-            if (Objects.equals(id, teamMatching.getTeam().getId())) {
-                TeamResponseDto.MyTeamDto myTeamDto = new TeamResponseDto.MyTeamDto();
-                myTeamDto.setId(teamMatching.getTeam().getId());
-                myTeamDto.setTeamMatchingId(teamMatching.getId());
-                myTeamDto.setEvalOpposite(teamMatching.isEvalOpposite());
-                myTeamDto.setEvalStadium(teamMatching.isEvalStadium());
-
-                dto.setMyTeamDto(myTeamDto);
-            } else {
-                TeamResponseDto.OppositeTeamDto oppositeTeamDto = new TeamResponseDto.OppositeTeamDto();
-                oppositeTeamDto.setId(teamMatching.getTeam().getId());
-                oppositeTeamDto.setTeamName(teamMatching.getTeam().getTeamName());
-                oppositeTeamDto.setImageUrl(teamMatching.getTeam().getImgUrl());
-                oppositeTeamDto.setManner(teamMatching.getTeam().getManner());
-                oppositeTeamDto.setSkill(teamMatching.getTeam().getSkill());
-                dto.setOppositeTeamDto(oppositeTeamDto);
-            }
-
-            //            teams.add(setTeamDto(teamMatching1.get(i)));
+            MatchingRecordDto matchingRecordTemp = MatchingRecordDto.from(teamMatching.getMatchingRecord().getField(), matchingId, id, confirm, allRental, teamMatching1);
+            matchingRecordTempList.add(matchingRecordTemp);
         }
 
-
-        return dto;
+        return MyPageDto.from(team,matchingRecordTempList);
     }
 
 
